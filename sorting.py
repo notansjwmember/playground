@@ -68,22 +68,42 @@ os.system('cls')
 # insertion_sort(example_list)
 # print("Final sorted array is:", example_list)
 
-def merge_sort(arr):
+def merge_sort(arr, direction):
+    print("---------------------")
+    print("Direction:", direction)
+    print("Initial array: [12, 11, 13, 5, 6, 7]")
+    # as long as the length of array is greater than 1, trigger function
     if len(arr) > 1:
+        print()
+      
         mid = len(arr) // 2
-        L = arr[:mid]
-        R = arr[mid:]
+        L = arr[:mid] # first elements of the array
+        R = arr[mid:] # last elements of the array
+        
+        print("Left of array:", L)
+        print("Middle of array:", arr[mid])
+        print("Right of array:", R)
+        print()
 
-        merge_sort(L)
-        merge_sort(R)
+        # recursion
+        merge_sort(L, "left")
+        merge_sort(R, "right")
+        print()
+        print("Merge sort left:",merge_sort(L, "left"))
+        print("Merge sort right:",merge_sort(R, "right"))
 
-        i = j = k = 0
+        i = j = k = 0 # initially set all indexes to 0
 
+        print()
+        print(f"While {i} < {len(L)} and {j} < {len(R)} then")
         while i < len(L) and j < len(R):
+            print(f"If {L[i]} < {R[j]} then")
             if L[i] < R[j]:
+                print(f"Set index {k} ({arr[k]}) to index {i} (Previous: {L[i]})")
                 arr[k] = L[i]
                 i += 1
             else:
+                print(f"If {L[i]} > {R[j]} then")
                 arr[k] = R[j]
                 j += 1
             k += 1
@@ -101,4 +121,4 @@ def merge_sort(arr):
     return arr
 
 arr = [12, 11, 13, 5, 6, 7]
-print("Sorted array is: ", merge_sort(arr))
+print("Sorted array is: ", merge_sort(arr, "initial"))
