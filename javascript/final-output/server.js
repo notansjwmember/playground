@@ -65,7 +65,7 @@ const judgeUrl = 'https://judge0-ce.p.rapidapi.com/submissions';
 async function getCompiledData(token) {
   const options = {
     method: 'GET',
-    url: `${judgeUrl}/{token}`,
+    url: `${judgeUrl}/${token}`,
     params: {
       base64_encoded: 'true',
       fields: '*'
@@ -86,13 +86,12 @@ async function getCompiledData(token) {
 }
 
 app.post("/compile", async (req, res) => {
-
   const code = req.body.code;
-  const language = req.body.language || 100;
+  const language = req.body.language;
 
   const data = qs.stringify({
-    source_code: "print('Hello, Judge0!')",
-    language_id: 100,
+    source_code: code,
+    language_id: language,
     stdin: '',
     timeout: 5,
     memory_limit: 128000,
@@ -123,21 +122,23 @@ app.post("/compile", async (req, res) => {
     }
 
     if (result.status.id === 3) {
+      const decodedOutput = Buffer.from(result.stdout || '', 'base64').toString('utf-8');
+
       return res.status(200).json({
         message: 'Compilation and execution successful',
-        output: result.stdout,
-        error: result.stderr,
+        output: decodedOutput,
+        error: result.stderr ? Buffer.from(result.stderr, 'base64').toString('utf-8') : null,
       });
     } else {
       return res.status(500).json({message: 'Execution failed', error: result.stderr});
     }
-
-  } catch (e) {
+  } catch
+    (e) {
     console.error(e.message || e);
     return res.status(500).json({message: e.message || 'An error occurred'});
   }
-});
-
+})
+;
 
 app.listen(8080, () => {
   console.log("Server started on http://localhost:8080");

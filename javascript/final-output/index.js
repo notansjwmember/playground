@@ -1,7 +1,12 @@
 const url = "http://localhost:8080";
 
 let flexContainer = document.createElement("div");
+let gridContainer = document.createElement("div");
+let codeOutput = document.createElement("div");
+
 flexContainer.className = "flexContainer";
+gridContainer.className = "gridContainer";
+codeOutput.id = "codeOutput";
 
 const container = document.querySelector(".container");
 
@@ -41,23 +46,32 @@ function changeView(view) {
         getColor(color);
       }, 500);
     });
-  } else if (view === "compile") {
-    container.style.alignContent = "";
+  } else if (view === "code") {
+    container.style.placeContent = "";
 
     container.innerHTML = `
-    <form id="form-code" onsubmit="processCode(event)">
-      <select name="language">
-        <option value="">Select a language</option>
-        <option value="java">Java</option>
-        <option value="cpp">C++</option>
-        <option value="py">Python</option>
-        <option value="js">NodeJS</option>
-      </select>
-      <textarea name="code"></textarea>
-      <div class="line"></div>
-      <button type="submit" class="secondary-btn">Run</button>
-    </form>
+      <form id="form-code" onsubmit="processCode(event)">
+        <select name="language">
+            <option value="">Select a language</option>
+            <option value="100">Python</option>
+            <option value="102">NodeJS</option>
+            <option value="91">Java</option>
+            <option value="76">C++</option>
+        </select>
+        <div style="display: grid; grid-template-columns: 1fr 500px; gap: 0.5rem; height: 100%;" >
+        <textarea name="code" placeholder="Where the magic happens.."></textarea>
+        <div class="codeOutputWrapper">
+          <h4 class="title">Output</h4>
+          <div class="line"></div>
+        </div>
+        </div>
+        <div class="line"></div>
+        <button type="submit">Run</button>
+      </form>
     `;
+
+    const codeOutputWrapper = document.querySelector(".codeOutputWrapper");
+    codeOutputWrapper.appendChild(codeOutput);
   }
 }
 
@@ -296,6 +310,7 @@ async function getColor(color) {
 
 async function processCode(event) {
   event.preventDefault();
+  codeOutput.innerHTML = "";
 
   const form = event.target;
   const formData = new FormData(form);
@@ -305,26 +320,49 @@ async function processCode(event) {
     language: formData.get("language"),
   };
 
+  if (!data.code || !data.language) {
+    alert("Please enter a valid language or even really have something to compile.");
+    return;
+  }
+
   try {
     const response = await compileCode(data);
-    alert(response.message);
+
+    if (response.message) {
+      const text = document.createElement("p");
+      text.innerText = response.output;
+      codeOutput.appendChild(text);
+    }
   } catch (e) {
     console.error(e);
-    alert("An error occurred while compiling the code.");
   }
 }
 
 async function compileCode(payload) {
-  const urlEncodedPayload = new URLSearchParams(payload).toString();
+  const button = document.querySelector("button[type='submit']");
+
+  const loader = document.createElement("span");
+  loader.className = "loader";
+  button.appendChild(loader);
+  button.disabled = true;
+
+  const text = document.createElement("p");
+  text.innerText = "Compiling...";
+  codeOutput.appendChild(text);
 
   try {
     const response = await fetch(`${url}/compile`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       },
-      body: urlEncodedPayload,
+      body: JSON.stringify(payload),
     });
+
+    loader.remove();
+    button.disabled = false;
+
+    text.innerText = "";
 
     return await response.json();
   } catch (e) {
