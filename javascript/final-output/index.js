@@ -321,7 +321,7 @@ async function processCode(event) {
   };
 
   if (!data.code || !data.language) {
-    alert("Please enter a valid language or even really have something to compile.");
+    alert("Please enter code and select a language to compile.");
     return;
   }
 
@@ -330,11 +330,12 @@ async function processCode(event) {
 
     if (response.message) {
       const text = document.createElement("p");
-      text.innerText = response.output;
+      text.innerText = response.output || "No output received.";
       codeOutput.appendChild(text);
     }
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    alert(`Error during code compilation: ${error}`);
   }
 }
 
@@ -353,20 +354,24 @@ async function compileCode(payload) {
   try {
     const response = await fetch(`${url}/compile`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify(payload),
     });
 
+    const result = await response.json();
+
     loader.remove();
     button.disabled = false;
+    text.remove();
 
-    text.innerText = "";
+    return result;
+  } catch (error) {
+    loader.remove();
+    button.disabled = false;
+    text.remove();
 
-    return await response.json();
-  } catch (e) {
-    console.error(e);
-    throw e;
+    console.error("Compilation failed:", error);
+    throw error;
   }
 }
+

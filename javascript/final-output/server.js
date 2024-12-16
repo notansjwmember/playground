@@ -16,6 +16,7 @@ app.use(
 
 const fakerUrl = "https://fakerapi.it/api/v2/persons?_quantity=3";
 const colorUrl = "https://color.serialif.com/";
+const judgeUrl = 'https://judge0-ce.p.rapidapi.com/submissions';
 
 app.get("/", (req, res) => {
   return res.status(200).send("Hey! What are you doing here?!");
@@ -59,8 +60,6 @@ app.post("/color", async (req, res) => {
     return res.status(500).json({message: e.message || "An error occurred"});
   }
 });
-
-const judgeUrl = 'https://judge0-ce.p.rapidapi.com/submissions';
 
 async function getCompiledData(token) {
   const options = {
