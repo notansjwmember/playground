@@ -1,76 +1,103 @@
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bor</title>
-  <link rel="stylesheet" href="index.css">
-</head>
-<body>
-<div class="wrapper">
-  <aside>
-    <div class="card">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-           class="icon icon-tabler icons-tabler-outline icon-tabler-chart-dots-2">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M3 3v18h18"/>
-        <path d="M9 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
-        <path d="M13 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
-        <path d="M18 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/>
-        <path d="M21 3l-6 1.5"/>
-        <path d="M14.113 6.65l2.771 3.695"/>
-        <path d="M16 12.5l-5 2"/>
-      </svg>
-      <h3 class="title">Generate a graph with fake data</h3>
-      <p class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi aut, impedit iusto
-        labore laudantium libero non perferendis quae rem?</p>
-      <button id="graphBtn" type="button" onclick="generateGraph()">
-        Generate a graph
-      </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bor</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <aside>
+        <div class="card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-chart-dots-2"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 3v18h18" />
+            <path d="M9 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M13 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M18 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+            <path d="M21 3l-6 1.5" />
+            <path d="M14.113 6.65l2.771 3.695" />
+            <path d="M16 12.5l-5 2" />
+          </svg>
+          <h3 class="title">Generate a graph with fake data</h3>
+          <p class="desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi aut,
+            impedit iusto labore laudantium libero non perferendis quae rem?
+          </p>
+          <button id="graphBtn" type="button" onclick="generateGraph()">
+            Generate a graph
+          </button>
+        </div>
+        <div class="card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-palette"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25"
+            />
+            <path d="M8.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+            <path d="M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+            <path d="M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+          </svg>
+          <h3 class="title">Visualize a color's potential in your design</h3>
+          <p class="desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi aut,
+            impedit iusto labore laudantium libero non perferendis quae rem?
+          </p>
+          <button type="button" onclick="changeView('color')">Try a color</button>
+        </div>
+        <div class="card">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="icon icon-tabler icons-tabler-outline icon-tabler-code"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M7 8l-4 4l4 4" />
+            <path d="M17 8l4 4l-4 4" />
+            <path d="M14 4l-4 16" />
+          </svg>
+          <h3 class="title">Write and run code</h3>
+          <p class="desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi aut,
+            impedit iusto labore laudantium libero non perferendis quae rem?
+          </p>
+          <button type="button" onclick="changeView('compile')">Write some code</button>
+        </div>
+      </aside>
+      <main id="content">
+        <div class="container"></div>
+      </main>
     </div>
-    <div class="card">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-           class="icon icon-tabler icons-tabler-outline icon-tabler-palette">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path
-          d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25"/>
-        <path d="M8.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
-        <path d="M12.5 7.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
-        <path d="M16.5 10.5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/>
-      </svg>
-      <h3 class="title">Visualize a color's potential in your design</h3>
-      <p class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi aut, impedit iusto
-        labore laudantium libero non perferendis quae rem?</p>
-      <button type="button">
-        Try a color
-      </button>
-    </div>
-    <div class="card">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor"
-           stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-           class="icon icon-tabler icons-tabler-outline icon-tabler-code">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M7 8l-4 4l4 4"/>
-        <path d="M17 8l4 4l-4 4"/>
-        <path d="M14 4l-4 16"/>
-      </svg>
-      <h3 class="title">Write and run code</h3>
-      <p class="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus animi aut, impedit iusto
-        labore laudantium libero non perferendis quae rem?</p>
-      <button type="button">
-        Write some code
-      </button>
-    </div>
-  </aside>
-  <main id="content">
-    <div class="container">
 
-    </div>
-  </main>
-</div>
-
-<script src="index.js"></script>
-</body>
+    <script src="index.js"></script>
+  </body>
 </html>
