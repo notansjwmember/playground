@@ -51,7 +51,7 @@ aside {
 }
 
 main {
-  padding: 20px;
+  padding: 20px 20px 20px 0;
 }
 
 button {
@@ -114,7 +114,7 @@ button:hover {
 
 .container {
   display: grid;
-  gap: 1rem;
+  gap: 2.5rem;
   align-content: start;
   border-radius: 10px;
   border: 1px solid #1b233b;
@@ -131,6 +131,15 @@ button:hover {
   gap: 10px;
 }
 
+.color-title {
+  margin-bottom: 5px;
+}
+
+.color-header {
+  display: grid;
+  gap: 1rem;
+}
+
 .color-item {
   display: grid;
   gap: 0.8rem;
@@ -139,7 +148,7 @@ button:hover {
 .color-card {
   display: grid;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
   height: 4rem;
   border-radius: 10px;
   width: 100%;
@@ -155,7 +164,7 @@ button:hover {
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0.5rem;
 }
 

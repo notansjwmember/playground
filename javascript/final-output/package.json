@@ -3,6 +3,7 @@
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "final-output": "file:",
     "nodemon": "^3.1.9",
     "qs": "^6.13.1",
     "quickchart-js": "^3.1.3"

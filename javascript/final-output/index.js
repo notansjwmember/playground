@@ -13,17 +13,22 @@ function changeView(view) {
   if (view === "graph") {
   } else if (view === "color") {
     container.innerHTML = `
+    <div class="color-header">
       <div class="content-item">
-        <h4 class="title">Select a color</h4>
-        <input type="color">
+      <h4 class="title">Select a color</h4>
+      <input type="color">
       </div>
       <div class="line"></div>
+    </div>
     `;
 
     const input = container.querySelector("input");
     input.addEventListener("input", function (e) {
       const color = e.target.value.replace("#", "");
-      getColor(color);
+
+      setTimeout(() => {
+        getColor(color);
+      }, 500);
     });
   } else if (view === "compile") {
     container.innerHTML = `
@@ -218,23 +223,26 @@ async function getColor(color) {
 
     const data = await response.json();
 
-    container.innerHTML = `
-    <div class="color-item">
+    const colorItem = document.createElement("div");
+    colorItem.className = "color-item";
+
+    colorItem.innerHTML = `
+      <h2 class="title color-title">Requested color: #${color}</h2>
       <h4 class="title">Base color</h4>
-      <div class="color-card" id="base">
-        <p>Napapansin mo na ba?</p>
+      <div class="color-card" style="background-color: ${data?.base?.hex?.value};">
+        <p style="color: ${data?.base_without_alpha_contrasted_text?.hex?.value};">Napapansin mo na ba?</p>
       </div>
-      <div class="line"></div>
       <h4 class="title">Complementary</h4>
-      <div class="color-card" id="complementary">
-        <p>Iniibig kita</p>
+      <div class="color-card" style="background-color: ${data?.complementary?.hex?.value};>
+        <p style="${data?.complementary_without_alpha_contrasted_text?.hex?.value}">Iniibig kita</p>
       </div>
-      <div class="line"></div>
       <h4 class="title">Grayscale</h4>
-      <div class="color-card" id="grayscale">
-        <p>Aking sinta</p>
+      <div class="color-card" style="background-color: ${data?.base?.grayscale?.value};>
+        <p style="color: ${data?.grayscale_without_alpha_contrasted_text?.hex?.value};">Aking sinta</p>
       </div>
-    </div>`;
+      `;
+
+    container.appendChild(colorItem);
   } catch (e) {
     console.error(e);
   }
