@@ -19,9 +19,11 @@ function changeView(view) {
       </div>
       <div class="line"></div>
     `;
+
     const input = container.querySelector("input");
     input.addEventListener("input", function (e) {
-      console.log(e.target.value);
+      const color = e.target.value.replace("#", "");
+      getColor(color);
     });
   } else if (view === "compile") {
     container.innerHTML = `
@@ -56,20 +58,68 @@ function changeView(view) {
   }
 }
 
-async function getChartData() {
-  const response = await fetch(
-    `https://quickchart.io/chart?c={type:'bar',data:{labels:[2012,2013,2014,2015, 2016],datasets:[{label:'Users',data:[120,60,50,180,120]}]}}
-`,
-    {
-      method: "GET",
-    }
-  );
+async function getChartData(countries, countryMap) {
+  const payload = {
+    type: "bar",
+    data: {
+      labels: countries,
+      datasets: [
+        {
+          label: "Male",
+          backgroundColor: "rgb(54, 162, 235)",
+          borderColor: "rgb(54, 162, 235)",
+          borderWidth: 1,
+          data: Object.values(countryMap[countries[0]]),
+        },
+        {
+          label: "Female",
+          backgroundColor: "rgb(255, 159, 64)",
+          borderColor: "rgb(255, 159, 64)",
+          borderWidth: 1,
+          data: Object.values(countryMap[countries[1]]),
+        },
+        {
+          label: "Other",
+          backgroundColor: "rgb(75, 192, 192)",
+          borderColor: "rgb(75, 192, 192)",
+          borderWidth: 1,
+          data: Object.values(countryMap[countries[2]]),
+        },
+      ],
+    },
+    options: {
+      title: {
+        display: true,
+        text: "Bar Chart",
+      },
+      plugins: {
+        datalabels: {
+          anchor: "center",
+          align: "center",
+          color: "#666",
+          font: {
+            weight: "normal",
+          },
+        },
+      },
+    },
+  };
 
-  const data = await response.arrayBuffer();
+  const response = await fetch(`${url}/chart`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
 
+  const data = await response.json();
+  const div = document.createElement("div");
   const img = document.createElement("img");
-  img.src = URL.createObjectURL(new Blob([data], { type: "image/png" }));
-  container.appendChild(img);
+  div.className = "content-image";
+  img.src = data.url;
+  div.appendChild(img);
+  container.appendChild(div);
 }
 
 async function generateGraph() {
@@ -80,15 +130,114 @@ async function generateGraph() {
   button.appendChild(loader);
   button.disabled = true;
 
-  // const response = await fetch(`${url}/generate`, {
-  //   method: "GET",
-  // });
+  const response = await fetch(`${url}/faker`, {
+    method: "GET",
+  });
 
   loader.remove();
   button.disabled = false;
 
-  // const data = await response.json();
-  await getChartData();
+  const data = await response.json();
+
+  const countries = data.data.map((item) => item.country);
+  const contact = data.data.map((item) => item.contact);
+  const genders = contact.map((item) => item.gender);
+
+  const genderMap = {
+    other: 0,
+    male: 0,
+    female: 0,
+  };
+
+  const countryMap = countries.reduce((acc, country) => {
+    if (!acc[country]) {
+      acc[country] = {
+        male: 0,
+        female: 0,
+        other: 0,
+      };
+    }
+
+    const index = countries.indexOf(country);
+    const gender = genders[index];
+
+    if (genderMap[gender] !== undefined) {
+      acc[country][gender] += 1;
+    }
+
+    return acc;
+  }, {});
+
+  const people = data.data;
+
+  const peopleData = people.map((person) => {
+    return {
+      name: person.name,
+      email: person.email,
+      country: person.country,
+      gender: person.contact.gender,
+    };
+  });
+
+  const gridContainer = document.createElement("div");
+  gridContainer.className = "gridContainer";
+  container.appendChild(gridContainer);
+
+  peopleData.forEach((item, index) => {
+    const personCard = document.createElement("div");
+
+    personCard.innerHTML = `
+      <div class="card graph">
+        <h4 class="title">Person ${index + 1}</h4>
+        <p>Name</p>
+        <p style="color: white;">${item.name}</p>
+        <p>Email</p>
+        <p style="color: white;">${item.email}</p>
+        <p>Gender</p>
+        <p style="color: white;">${item.gender}</p>
+        <p>Country</p>
+        <p style="color: white;">${item.country}</p>
+      </div>
+    `;
+
+    gridContainer.appendChild(personCard);
+  });
+
+  await getChartData(countries, countryMap);
+}
+
+async function getColor(color) {
+  try {
+    const response = await fetch(`${url}/color`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ color: color }),
+    });
+
+    const data = await response.json();
+
+    container.innerHTML = `
+    <div class="color-item">
+      <h4 class="title">Base color</h4>
+      <div class="color-card" id="base">
+        <p>Napapansin mo na ba?</p>
+      </div>
+      <div class="line"></div>
+      <h4 class="title">Complementary</h4>
+      <div class="color-card" id="complementary">
+        <p>Iniibig kita</p>
+      </div>
+      <div class="line"></div>
+      <h4 class="title">Grayscale</h4>
+      <div class="color-card" id="grayscale">
+        <p>Aking sinta</p>
+      </div>
+    </div>`;
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 async function compileCode(payload) {

@@ -80,6 +80,7 @@ button:hover {
   background-color: #171931;
   color: #737dbe;
   width: 400px;
+  height: 100%;
 }
 
 #content {
@@ -93,7 +94,8 @@ button:hover {
   display: grid;
   gap: 1rem;
 
-  select, textarea {
+  select,
+  textarea {
     display: block;
     outline: none;
     background-color: #171931;
@@ -120,12 +122,41 @@ button:hover {
   width: 100%;
   height: 100%;
   padding: 20px;
+  overflow-y: scroll;
 }
 
 .content-item {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.color-item {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.color-card {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  border-radius: 10px;
+  width: 100%;
+  background-color: white;
+}
+
+.graph h4 {
+  margin-bottom: 5px;
+}
+.graph {
+  gap: 4px;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 0.5rem;
 }
 
 .main-title {
